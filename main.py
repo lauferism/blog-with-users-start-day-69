@@ -43,7 +43,6 @@ class Users(UserMixin, db.Model):
     password = db.Column(db.String(250), nullable=False)
     posts = relationship("BlogPost", back_populates="author")
     comments = relationship("Comment", back_populates="commenter")
-    gravatar_url = db.Column(db.String(250), nullable=False)
 
 
 class BlogPost(db.Model):
@@ -102,7 +101,6 @@ def register():
         if user is None:
             password = request.form["password"]
             salted_pass = generate_password_hash(password)
-            # gravatar_url = hashlib.md5(password.encode('utf-8')).hexdigest()
             new_user = Users(email=user_email, password=salted_pass, name=request.form["name"])
             db.session.add(new_user)
             db.session.commit()
